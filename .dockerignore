@@ -1,0 +1,8 @@
+LICENSE
+.env
+.gitignore
+compose.yaml
+mysql.yaml
+proxy.yaml
+README.md
+schema.pdf

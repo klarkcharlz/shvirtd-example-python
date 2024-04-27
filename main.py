@@ -3,20 +3,25 @@ from flask import request
 import os
 import mysql.connector
 from datetime import datetime
+from dotenv import load_dotenv
+
+
+load_dotenv(".env")
 
 app = Flask(__name__)
-db_host=os.environ.get('DB_HOST')
-db_user=os.environ.get('DB_USER')
-db_password=os.environ.get('DB_PASSWORD')
-db_database=os.environ.get('DB_NAME')
+db_host = os.environ.get('DB_HOST')
+db_user = os.environ.get('MYSQL_USER')
+db_password = os.environ.get('MYSQL_PASSWORD')
+db_database = os.environ.get('MYSQL_DATABASE')
+
 
 # Подключение к базе данных MySQL
 db = mysql.connector.connect(
-host=db_host,
-user=db_user,
-password=db_password,
-database=db_database,
-autocommit=True )
+    host=db_host,
+    user=db_user,
+    password=db_password,
+    database=db_database,
+    autocommit=True)
 cursor = db.cursor()
 
 # SQL-запрос для создания таблицы в БД
@@ -29,10 +34,12 @@ request_ip VARCHAR(255)
 """
 cursor.execute(create_table_query)
 
+
 @app.route('/')
 def index():
     # Получение IP-адреса пользователя
     ip_address = request.headers.get('X-Forwarded-For')
+    print(f"{ip_address=}")
 
     # Запись в базу данных
     now = datetime.now()
